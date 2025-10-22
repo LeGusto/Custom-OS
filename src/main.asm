@@ -57,5 +57,5 @@ msg db 'LESS GOOOOOOOO!', endl, 0
 ; pads OS program with 0s
 TIMES 510-($-$$) DB 0
 
-; insert code
-DW 0AA55h
+; insert 2 byte code
+DW 0xAA55
