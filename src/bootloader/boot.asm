@@ -1,16 +1,16 @@
 ORG 0x7C00 ; offsets to OS memory location
 BITS 16 ; register width
 
-#
-# FAT12 headers
-#
+;
+; FAT12 headers
+;
 
-jmp start short
+jmp short start
 nop ; for alignment, OEM (original equipment manufacturer) and DOS (disk operating system) must be speficied at 0x3
 
-# bpb (BIOS parameter block)
-DOS_version:                            DQ 0x73666B6D
-version_name:                           DQ 0x7461662E
+; bpb (BIOS parameter block)
+DOS_version:                            DD 0x73666B6D
+version_name:                           DD 0x7461662E
 bytes_per_sector:                       DW 0x0200 ; 512
 no_of_sectors_per_cluster:              DB 0x01 ; 1
 no_of_reserved_sector:                  DW 0x0001 ; 1 (boot sector)
@@ -24,7 +24,13 @@ no_of_heads_or_sides_on_storage_media:  DW 0x0002 ; 2
 no_of_hidden_sectors:                   DW 0000 ; 0
 no_of_large_sectors:                    DW 0000 ; 0
 
-
+; ebr (extended boot record)
+drive_number:                           DB 0x00 ; 0 for floppy, 0x80 hdd, tells which drive to read from
+flags_in_windows_NT:                    DB 0x00
+signature:                              DB 0x29
+volumeID_serial_number:                 DD 0xE14E6F38 ; arbitrary
+volume_label_string:                    DB 'LE_GUSTO_OS'
+system_id:                              DB 'FAT12   '
 
 
 

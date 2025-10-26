@@ -20,10 +20,10 @@ $(BUILD_DIR)/main_floppy.img: $(BUILD_DIR)/bootloader.bin bootloader kernel
 # -n is just a volume name
 	mkfs.fat -v -F 12 -n "CustomOS" $(BUILD_DIR)/main_floppy.img
 # copies over bootloader to the floppy image, prevents trunctation (removing suffix of unused space after dd)
-#	dd if=$(BUILD_DIR)/bootloader.bin of=$(BUILD_DIR)/main_floppy.img conv=notrunc
+	dd if=$(BUILD_DIR)/bootloader.bin of=$(BUILD_DIR)/main_floppy.img conv=notrunc
 # mcopy is used to copy to unmounted systems while respecting the filesystem, so it automatically
 # copies over kernel to fat
-#	mcopy -i $(BUILD_DIR)/main_floppy.img $(BUILD_DIR)/kernel.bin "kernel.bin"
+	mcopy -i $(BUILD_DIR)/main_floppy.img $(BUILD_DIR)/kernel.bin "kernel.bin"
 
 
 
