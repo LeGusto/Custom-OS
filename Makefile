@@ -18,12 +18,12 @@ $(BUILD_DIR)/main_floppy.img: $(BUILD_DIR)/bootloader.bin bootloader kernel
 # create a fat (file allocation table) filesystem where each 
 # -F 12 means that each fat entry has 12 bits available, so it store every sector as an entry
 # -n is just a volume name
-	mkfs.fat -F 12 -n "CustomOS" $(BUILD_DIR)/main_floppy.img
+	mkfs.fat -v -F 12 -n "CustomOS" $(BUILD_DIR)/main_floppy.img
 # copies over bootloader to the floppy image, prevents trunctation (removing suffix of unused space after dd)
-	dd if=$(BUILD_DIR)/bootloader.bin of=$(BUILD_DIR)/main_floppy.img conv=notrunc
+#	dd if=$(BUILD_DIR)/bootloader.bin of=$(BUILD_DIR)/main_floppy.img conv=notrunc
 # mcopy is used to copy to unmounted systems while respecting the filesystem, so it automatically
 # copies over kernel to fat
-	mcopy -i $(BUILD_DIR)/main_floppy.img $(BUILD_DIR)/kernel.bin "kernel.bin"
+#	mcopy -i $(BUILD_DIR)/main_floppy.img $(BUILD_DIR)/kernel.bin "kernel.bin"
 
 
 
