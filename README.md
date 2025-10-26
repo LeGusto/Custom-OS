@@ -1,16 +1,16 @@
 # Custom OS
 
-A custom 16-b x86 OS.
+A custom x86 OS from scratch.
 
-## Start instructions
+# Start instructions
 
-# Build the OS
+## Build the OS
 ```bash
 make clean
 make
 ```
 
-# Start the OS
+## Start the OS
 
 qemu example:
 ```bash
