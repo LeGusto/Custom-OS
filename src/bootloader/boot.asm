@@ -15,7 +15,7 @@ bytes_per_sector:                       DW 0x0200 ; 512
 no_of_sectors_per_cluster:              DB 0x01 ; 1
 no_of_reserved_sector:                  DW 0x0001 ; 1 (boot sector)
 no_of_FATs_on_storage_media:            DB 0x02 ; 2
-no_of_root_directory_entries:           DW 0x00E0 ; 224
+no_of_root_directory_entries:           DW 0x00E0 ; 224 (floppy standard, contains file info per entry)
 total_sectors_in_logical_volume:        DW 0x0B40 ; 2880
 media_descriptor_type:                  DB 0xF0 ; 1.44MB floppy 
 no_of_sectors_per_FAT:                  DW 0x0009 ; 9, since we need to represent 2880 sectors (2880 entries), and each FAT entry is 1.5 bytes, so (2880 * 1.5) / 512 rounds up to 9
@@ -49,7 +49,7 @@ puts:
     PUSH ax 
 
 .loop:
-    LODSB ; sets al = [DS:SI], then increments SI. LODSB loads a singly byte to al, which is the lower half of ax, and each character is 1 byte
+    LODSB ; sets al = [DS:SI], then increments SI. LODSB loads a single byte to al, which is the lower half of ax, and each character is 1 byte
     OR al, al ; checks if the current byte is a terminate char (null), because it sets the Z flag to 1 when the result is 0
     JZ .done ; jumps to .done when Z flag is 1
 
@@ -82,6 +82,27 @@ main:
 
     ; immediatelly stop the CPU
     HLT
+
+; LBA to CHS
+; params:
+;  - ax: LBA address
+; returns:
+;    - cx 
+; 
+.lba_to_chs:
+    XOR dx, dx ; set high val of divident DX:AX to 0
+    DIV word [no_of_sectors_per_track] ; DX now contains the remainder, AX contains the quotient
+    MOV cx, dx ; store sector
+    INC cx ; sector starts from 1
+
+    XOR dx, dx ; now we have only the quotient as the divident
+    DIV word [no_of_heads_or_sides_on_storage_media]
+    MOV bx, dx ; store head
+
+    ; now cx contains the sector, bx contains the head and ax contains the cylinder
+
+
+
 
 ; failsafe in case HLT doesn't work to prevent reading random memory
 .halt:
